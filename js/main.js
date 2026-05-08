@@ -3,6 +3,7 @@ import { generateMatrix } from './generator.js';
 import { initAllSliders } from './sliders.js';
 import { initPresetPalettes, initCustomPalette } from './palette.js';
 import { initAlgorithmButtons, updateInfo, initGenerateButton } from './ui.js';
+import { showExportMenu } from './exporter.js';
 
 function render() {
     const matrixContainer = document.getElementById('matrix');
@@ -15,6 +16,7 @@ function render() {
 
 function init() {
     const matrixContainer = document.getElementById('matrix');
+    const exportBtn = document.getElementById('exportBtn');
 
     initAllSliders(
         (value) => {
@@ -42,6 +44,14 @@ function init() {
     initGenerateButton(() => {
         render();
     });
+
+    if (exportBtn) {
+        exportBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const { gridSize, algorithm, chaosLevel } = state.get();
+            showExportMenu(exportBtn, matrixContainer, state, gridSize, algorithm, chaosLevel);
+        });
+    }
 
     state.setRenderCallback(render);
 

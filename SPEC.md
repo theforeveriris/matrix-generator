@@ -130,6 +130,18 @@
 - Hover: 黑底白字
 - 箭头图标装饰
 
+### Export Button
+- 默认: 透明背景 + 灰边框
+- Hover: 边框变深
+- 点击展开导出菜单
+
+### Export Menu
+- PNG: 位图格式，适合直接使用
+- SVG: 矢量格式，可无损缩放
+- JSON: 完整数据，含配置和所有格子颜色
+- CSS: CSS 变量文件，包含色谱颜色
+- JS: JavaScript 模块，可直接引用格子数据
+
 ## 6. Technical Approach
 
 ### Architecture
@@ -147,6 +159,7 @@
     ├── sliders.js       # 滑块控件
     ├── palette.js       # 色谱管理
     ├── ui.js            # UI 交互
+    ├── exporter.js      # 导出功能（PNG/SVG/JSON/CSS/JS）
     └── main.js          # 主入口
 ```
 

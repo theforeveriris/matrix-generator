@@ -114,6 +114,70 @@ header {
     margin-left: 8px;
 }
 
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-export {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-export:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.export-menu {
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 0;
+    min-width: 160px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.export-menu-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    padding: 8px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+}
+
+.export-option {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.export-option:hover {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+}
+
 .matrix-container {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -498,5 +562,10 @@ header {
     .info-bar {
         flex-wrap: wrap;
         gap: 12px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
     }
 }
