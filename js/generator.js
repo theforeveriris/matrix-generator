@@ -6,7 +6,7 @@ export function getColorByIndex(index, gridSize, algorithm, chaosLevel, colors) 
 
     const chaosRoll = Math.random() * 10;
 
-    if (chaosRoll > chaosLevel) {
+    if (chaosRoll < chaosLevel) {
         return colors[Math.floor(Math.random() * colors.length)];
     }
 
