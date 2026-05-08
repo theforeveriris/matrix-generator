@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATRIX GENERATOR | 色彩矩阵生成器</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <h1>Matrix Generator</h1>
+            </div>
+            <button class="btn-generate" id="generateBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-right:8px;">
+                    <path d="M23 4v6h-6M1 20v-6h6"/>
+                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                </svg>
+                Generate
+            </button>
+        </header>
+
+        <div class="matrix-container">
+            <div class="matrix" id="matrix"></div>
+        </div>
+
+        <div class="controls">
+            <div class="controls-grid">
+                <div class="control-section">
+                    <div class="section-title">Grid Size</div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">Matrix Dimension</span>
+                            <span class="slider-value" id="gridValue">8</span>
+                        </div>
+                        <div class="slider-track" id="gridSlider">
+                            <div class="slider-fill" id="gridFill"></div>
+                            <div class="slider-thumb" id="gridThumb"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">Chaos Level</div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">Randomness</span>
+                            <span class="slider-value" id="chaosValue">5</span>
+                        </div>
+                        <div class="slider-track" id="chaosSlider">
+                            <div class="slider-fill" id="chaosFill"></div>
+                            <div class="slider-thumb" id="chaosThumb"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">Algorithm</div>
+                    <div class="algorithm-buttons">
+                        <button class="algo-btn active" data-algo="random">Random</button>
+                        <button class="algo-btn" data-algo="gradient">Gradient</button>
+                        <button class="algo-btn" data-algo="wave">Wave</button>
+                        <button class="algo-btn" data-algo="block">Block</button>
+                        <button class="algo-btn" data-algo="diamond">Diamond</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">Color Palette</div>
+                    <div class="preset-palettes">
+                        <button class="preset-btn active" data-preset="neon">
+                            <div class="preset-colors" id="neonPreview"></div>
+                            <span class="preset-name">Neon</span>
+                        </button>
+                        <button class="preset-btn" data-preset="sunset">
+                            <div class="preset-colors" id="sunsetPreview"></div>
+                            <span class="preset-name">Sunset</span>
+                        </button>
+                        <button class="preset-btn" data-preset="ocean">
+                            <div class="preset-colors" id="oceanPreview"></div>
+                            <span class="preset-name">Ocean</span>
+                        </button>
+                        <button class="preset-btn" data-preset="forest">
+                            <div class="preset-colors" id="forestPreview"></div>
+                            <span class="preset-name">Forest</span>
+                        </button>
+                    </div>
+                    <div class="custom-palette">
+                        <div class="section-title">Custom Palette</div>
+                        <div class="color-slots" id="customSlots"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-bar">
+                <div class="info-item">
+                    Grid: <span id="infoGrid">8×8</span>
+                </div>
+                <div class="info-item">
+                    Colors: <span id="infoColors">6</span>
+                </div>
+                <div class="info-item">
+                    Algorithm: <span id="infoAlgo">Random</span>
+                </div>
+                <div class="info-item">
+                    Chaos: <span id="infoChaos">5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
