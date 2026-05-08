@@ -1,159 +1,168 @@
-export async function exportAsPNG(matrixElement, gridSize, filename = 'matrix') {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const cellSize = 40;
-    const gap = 0;
-    const padding = 0;
+export function exportAsPNG(matrixElement, gridSize, filename = 'matrix') {
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 40;
 
-    canvas.width = gridSize * cellSize;
-    canvas.height = gridSize * cellSize;
+        canvas.width = gridSize * cellSize;
+        canvas.height = gridSize * cellSize;
 
-    const cells = matrixElement.querySelectorAll('.matrix-cell');
-    cells.forEach((cell, index) => {
-        const row = Math.floor(index / gridSize);
-        const col = index % gridSize;
-        const x = col * cellSize;
-        const y = row * cellSize;
+        const cells = matrixElement.querySelectorAll('.matrix-cell');
+        cells.forEach((cell, index) => {
+            const row = Math.floor(index / gridSize);
+            const col = index % gridSize;
+            const x = col * cellSize;
+            const y = row * cellSize;
 
-        ctx.fillStyle = cell.style.backgroundColor;
-        ctx.fillRect(x, y, cellSize, cellSize);
-    });
+            ctx.fillStyle = cell.style.backgroundColor || '#ccc';
+            ctx.fillRect(x, y, cellSize, cellSize);
+        });
 
-    const link = document.createElement('a');
-    link.download = `${filename}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+        const link = document.createElement('a');
+        link.download = `${filename}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    } catch (err) {
+        console.error('PNG export failed:', err);
+    }
 }
 
-export async function exportAsSVG(matrixElement, gridSize, filename = 'matrix') {
-    const cellSize = 40;
-    const width = gridSize * cellSize;
-    const height = gridSize * cellSize;
+export function exportAsSVG(matrixElement, gridSize, filename = 'matrix') {
+    try {
+        const cellSize = 40;
+        const width = gridSize * cellSize;
+        const height = gridSize * cellSize;
 
-    let svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+        let svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <rect width="100%" height="100%" fill="#ebe7e0"/>
   <g>
 `;
 
-    const cells = matrixElement.querySelectorAll('.matrix-cell');
-    cells.forEach((cell, index) => {
-        const row = Math.floor(index / gridSize);
-        const col = index % gridSize;
-        const x = col * cellSize;
-        const y = row * cellSize;
-        const color = cell.style.backgroundColor;
+        const cells = matrixElement.querySelectorAll('.matrix-cell');
+        cells.forEach((cell, index) => {
+            const row = Math.floor(index / gridSize);
+            const col = index % gridSize;
+            const x = col * cellSize;
+            const y = row * cellSize;
+            const color = cell.style.backgroundColor || '#ccc';
 
-        svgContent += `    <rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="${color}"/>\n`;
-    });
+            svgContent += `    <rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="${color}"/>\n`;
+        });
 
-    svgContent += `  </g>
+        svgContent += `  </g>
 </svg>`;
 
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = `${filename}.svg`;
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url);
+        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `${filename}.svg`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        console.error('SVG export failed:', err);
+    }
 }
 
 export function exportAsJSON(state, gridSize, algorithm, chaosLevel, filename = 'matrix') {
-    const colors = [];
-    const cells = document.querySelectorAll('.matrix-cell');
-    cells.forEach((cell, index) => {
-        colors.push({
-            index,
-            row: Math.floor(index / gridSize),
-            col: index % gridSize,
-            color: cell.style.backgroundColor
+    try {
+        const colors = [];
+        const cells = document.querySelectorAll('.matrix-cell');
+        cells.forEach((cell, index) => {
+            colors.push({
+                index,
+                row: Math.floor(index / gridSize),
+                col: index % gridSize,
+                color: cell.style.backgroundColor
+            });
         });
-    });
 
-    const data = {
-        version: '1.0',
-        generated: new Date().toISOString(),
-        grid: {
-            size: gridSize,
-            total: gridSize * gridSize
-        },
-        settings: {
-            algorithm,
-            chaosLevel
-        },
-        palette: {
-            name: state.get('currentPalette'),
-            colors: state.getColors()
-        },
-        cells: colors
-    };
+        const data = {
+            version: '1.0',
+            generated: new Date().toISOString(),
+            grid: {
+                size: gridSize,
+                total: gridSize * gridSize
+            },
+            settings: {
+                algorithm,
+                chaosLevel
+            },
+            palette: {
+                name: state.get('currentPalette'),
+                colors: state.getColors()
+            },
+            cells: colors
+        };
 
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = `${filename}.json`;
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url);
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `${filename}.json`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        console.error('JSON export failed:', err);
+    }
 }
 
 export function exportAsCSS(state, filename = 'matrix') {
-    const colors = state.getColors();
-    const cssLines = [
-        ':root {',
-        '  /* Matrix Palette Export */',
-        `  /* Generated: ${new Date().toISOString()} */`,
-        ''
-    ];
+    try {
+        const colors = state.getColors();
+        const cssLines = [
+            ':root {',
+            '  /* Matrix Palette Export */',
+            `  /* Generated: ${new Date().toISOString()} */`,
+            ''
+        ];
 
-    colors.forEach((color, index) => {
-        const varName = `--color-${index + 1}`;
-        cssLines.push(`  ${varName}: ${color};`);
-    });
+        colors.forEach((color, index) => {
+            const varName = `--color-${index + 1}`;
+            cssLines.push(`  ${varName}: ${color};`);
+        });
 
-    cssLines.push('');
-    cssLines.push('  /* Color aliases */');
-    cssLines.push(`  --matrix-primary: ${colors[0]};`);
-    if (colors.length > 1) {
-        cssLines.push(`  --matrix-secondary: ${colors[1]};`);
+        cssLines.push('');
+        cssLines.push('  /* Color aliases */');
+        cssLines.push(`  --matrix-primary: ${colors[0]};`);
+        if (colors.length > 1) cssLines.push(`  --matrix-secondary: ${colors[1]};`);
+        if (colors.length > 2) cssLines.push(`  --matrix-accent: ${colors[2]};`);
+        if (colors.length > 3) cssLines.push(`  --matrix-highlight: ${colors[colors.length - 1]};`);
+
+        cssLines.push('}');
+        cssLines.push('');
+        cssLines.push('/* Usage: */');
+        cssLines.push('/* .element { background-color: var(--matrix-primary); } */');
+
+        const blob = new Blob([cssLines.join('\n')], { type: 'text/css' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `${filename}-palette.css`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        console.error('CSS export failed:', err);
     }
-    if (colors.length > 2) {
-        cssLines.push(`  --matrix-accent: ${colors[2]};`);
-    }
-    if (colors.length > 3) {
-        cssLines.push(`  --matrix-highlight: ${colors[colors.length - 1]};`);
-    }
-
-    cssLines.push('}');
-    cssLines.push('');
-    cssLines.push('/* Usage: */');
-    cssLines.push('/* .element { background-color: var(--matrix-primary); } */');
-
-    const blob = new Blob([cssLines.join('\n')], { type: 'text/css' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = `${filename}-palette.css`;
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url);
 }
 
 export function exportAsCode(state, gridSize, filename = 'matrix') {
-    const colors = state.getColors();
-    const grid = [];
-    const cells = document.querySelectorAll('.matrix-cell');
+    try {
+        const colors = state.getColors();
+        const grid = [];
+        const cells = document.querySelectorAll('.matrix-cell');
 
-    for (let i = 0; i < gridSize; i++) {
-        const row = [];
-        for (let j = 0; j < gridSize; j++) {
-            const cell = cells[i * gridSize + j];
-            row.push(cell.style.backgroundColor);
+        for (let i = 0; i < gridSize; i++) {
+            const row = [];
+            for (let j = 0; j < gridSize; j++) {
+                const cell = cells[i * gridSize + j];
+                row.push(cell ? cell.style.backgroundColor : '#ccc');
+            }
+            grid.push(row);
         }
-        grid.push(row);
-    }
 
-    const code = `// Matrix Generator Export
+        const code = `// Matrix Generator Export
 // Generated: ${new Date().toISOString()}
 
 // Configuration
@@ -169,13 +178,16 @@ const MATRIX = ${JSON.stringify(grid, null, 4)};
 // Example: document.body.style.backgroundColor = MATRIX[0][0];
 `;
 
-    const blob = new Blob([code], { type: 'text/javascript' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = `${filename}.js`;
-    link.href = url;
-    link.click();
-    URL.revokeObjectURL(url);
+        const blob = new Blob([code], { type: 'text/javascript' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `${filename}.js`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        console.error('JS export failed:', err);
+    }
 }
 
 export function showExportMenu(anchorElement, matrixElement, state, gridSize, algorithm, chaosLevel) {
@@ -196,24 +208,19 @@ export function showExportMenu(anchorElement, matrixElement, state, gridSize, al
         <button class="export-option" data-format="js">JavaScript</button>
     `;
 
-    const rect = anchorElement.getBoundingClientRect();
-    menu.style.position = 'absolute';
-    menu.style.top = `${rect.bottom + 8}px`;
-    menu.style.right = '0';
-
-    document.body.appendChild(menu);
+    anchorElement.parentElement.appendChild(menu);
 
     menu.querySelectorAll('.export-option').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
+        btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const format = btn.dataset.format;
 
             switch (format) {
                 case 'png':
-                    await exportAsPNG(matrixElement, gridSize);
+                    exportAsPNG(matrixElement, gridSize);
                     break;
                 case 'svg':
-                    await exportAsSVG(matrixElement, gridSize);
+                    exportAsSVG(matrixElement, gridSize);
                     break;
                 case 'json':
                     exportAsJSON(state, gridSize, algorithm, chaosLevel);
@@ -230,8 +237,11 @@ export function showExportMenu(anchorElement, matrixElement, state, gridSize, al
         });
     });
 
-    document.addEventListener('click', function closeMenu() {
-        menu.remove();
-        document.removeEventListener('click', closeMenu);
-    });
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu() {
+            const menu = document.querySelector('.export-menu');
+            if (menu) menu.remove();
+            document.removeEventListener('click', closeMenu);
+        });
+    }, 0);
 }
