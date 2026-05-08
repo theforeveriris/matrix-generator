@@ -50,7 +50,6 @@ export function generateMatrix(container, gridSize, algorithm, chaosLevel, color
     container.innerHTML = '';
     container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
 
-    const maxSize = Math.min(500 / gridSize, 60);
     const total = gridSize * gridSize;
 
     for (let i = 0; i < total; i++) {
@@ -60,8 +59,6 @@ export function generateMatrix(container, gridSize, algorithm, chaosLevel, color
         const color = getColorByIndex(i, gridSize, algorithm, chaosLevel, colors);
         cell.style.backgroundColor = color;
         cell.style.color = color;
-        cell.style.width = `${maxSize}px`;
-        cell.style.height = `${maxSize}px`;
 
         container.appendChild(cell);
 

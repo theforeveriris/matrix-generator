@@ -102,7 +102,7 @@
 ## 5. Component Inventory
 
 ### Grid Cell
-- 默认: 微小圆角，低对比度
+- 默认: 无间距，紧凑排列
 - Hover: 放大 1.15 倍
 - Transition: 0.4s ease
 

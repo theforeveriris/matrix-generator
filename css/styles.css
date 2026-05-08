@@ -117,13 +117,12 @@ header {
 .matrix-container {
     background: var(--surface);
     border: 1px solid var(--border);
-    padding: 48px;
     margin-bottom: 64px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 480px;
+    display: grid;
+    place-items: center;
     position: relative;
+    min-height: 480px;
+    max-height: 70vh;
 }
 
 .matrix-container::before {
@@ -150,16 +149,18 @@ header {
 
 .matrix {
     display: grid;
-    gap: 3px;
-    padding: 24px;
+    gap: 0;
     background: var(--bg-dark);
     border: 1px solid var(--border);
+    max-width: min(400px, calc(100vw - 80px));
+    max-height: min(400px, calc(100vh - 300px));
+    width: 100%;
+    aspect-ratio: 1;
 }
 
 .matrix-cell {
     width: 100%;
     aspect-ratio: 1;
-    border-radius: 1px;
     transition: all 0.4s ease;
     position: relative;
     opacity: 0;
@@ -444,29 +445,49 @@ header {
     margin-left: 8px;
 }
 
+@media (max-width: 900px) {
+    .controls {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
-        padding: 48px 24px;
+        padding: 24px 16px;
     }
 
     header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 24px;
+        gap: 16px;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
     }
 
     .matrix-container {
-        padding: 32px;
-        min-height: 320px;
+        margin-bottom: 32px;
+        min-height: auto;
+        aspect-ratio: 1;
+    }
+
+    .matrix-container::before,
+    .matrix-container::after {
+        display: none;
+    }
+
+    .matrix {
+        max-width: min(320px, calc(100vw - 48px));
+        max-height: min(320px, calc(100vw - 48px));
     }
 
     .controls {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .algorithm-buttons {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .preset-palettes {
@@ -475,6 +496,6 @@ header {
 
     .info-bar {
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
     }
 }
