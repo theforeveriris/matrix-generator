@@ -14,14 +14,14 @@ export const PALETTES = {
     mint: ['#0d3b3b', '#1a5656', '#267272', '#339090', '#66b2b2', '#99d9d9'],
     trans: ['#5bcefa', '#f5a9b8', '#ffffff', '#f5a9b8', '#5bcefa', '#d0d0d0'],
     rainbow: ['#e40303', '#ff8c00', '#ffed00', '#008026', '#004dff', '#750787'],
-    lesbian: ['#d62828', '#ff6b35', '#ffffff', '#ff9a76', '#ff7faf', '#803838'],
-    gay: ['#078d70', '#26ceaa', '#98e8c1', '#ffffff', '#7badee', '#5049cc'],
+    lesbian: ['#d52d00', '#ef7627', '#ff9aae', '#ffffff', '#d162a4', '#a50062'],
+    gay: ['#078d70', '#3aa982', '#6dc555', '#79b8ff', '#4170a6', '#5039a3'],
     bisexual: ['#d60270', '#9c59d1', '#0038a8', '#d60270', '#9c59d1', '#0038a8'],
     pan: ['#ff218c', '#ffd800', '#21b1ff', '#ff218c', '#ffd800', '#21b1ff'],
     nb: ['#fcf434', '#ffffff', '#9c59d1', '#ffffff', '#282828', '#d0d0d0'],
     ace: ['#000000', '#a3a3a3', '#ffffff', '#800080', '#a3a3a3', '#800080'],
     gqueer: ['#b57fd8', '#ffffff', '#498142', '#b57fd8', '#ffffff', '#498142'],
-    intersex: ['#78009c', '#ffd800', '#78009c', '#ffd800', '#78009c', '#ffd800']
+    intersex: ['#fff200', '#9c59b1', '#fff200', '#9c59b1', '#fff200', '#9c59b1']
 };
 
 export const ALGORITHMS = ['random', 'gradient', 'wave', 'block', 'diamond'];
