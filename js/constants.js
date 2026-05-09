@@ -24,7 +24,7 @@ export const PALETTES = {
     intersex: ['#fff200', '#9c59b1', '#fff200', '#9c59b1', '#fff200', '#9c59b1']
 };
 
-export const ALGORITHMS = ['random', 'gradient', 'wave', 'block', 'diamond'];
+export const ALGORITHMS = ['random', 'gradient', 'wave', 'block', 'diamond', 'horizontal', 'vertical', 'diagonal', 'spiral', 'concentric', 'checker', 'stripes', 'triangular'];
 
 export const DEFAULT_STATE = {
     gridSize: 8,
