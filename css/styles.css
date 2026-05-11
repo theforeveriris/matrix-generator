@@ -333,11 +333,32 @@ header {
     color: var(--text-primary);
 }
 
-.slider-value {
+.size-input {
     font-family: 'Space Mono', monospace;
     font-size: 0.85rem;
     color: var(--accent-sage);
     font-weight: 700;
+    width: 70px;
+    padding: 4px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    text-align: right;
+    transition: all 0.2s ease;
+}
+
+.size-input:focus {
+    outline: none;
+    border-color: var(--accent-sage);
+}
+
+.size-input::-webkit-outer-spin-button,
+.size-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.size-input {
+    -moz-appearance: textfield;
 }
 
 .slider-track {

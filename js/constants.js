@@ -33,5 +33,5 @@ export const DEFAULT_STATE = {
 };
 
 export const SLIDER_CONFIG = {
-    grid: { min: 3, max: 32, initial: 8 }
+    grid: { min: 3, max: 256, initial: 8 }
 };

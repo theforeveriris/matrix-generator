@@ -1,19 +1,29 @@
 import { SLIDER_CONFIG } from './constants.js';
 
-export function initSlider(trackId, thumbId, fillId, valueId, configKey, onChange) {
+export function initSlider(trackId, thumbId, fillId, inputId, configKey, onChange) {
     const track = document.getElementById(trackId);
     const thumb = document.getElementById(thumbId);
     const fill = document.getElementById(fillId);
-    const valueEl = document.getElementById(valueId);
+    const inputEl = document.getElementById(inputId);
     const config = SLIDER_CONFIG[configKey];
 
-    function updateSlider(percent) {
+    function updateSliderByPercent(percent) {
         const value = Math.round(config.min + (config.max - config.min) * percent);
         percent = Math.max(0, Math.min(1, percent));
 
         fill.style.width = `${percent * 100}%`;
         thumb.style.left = `${percent * 100}%`;
-        valueEl.textContent = value;
+        inputEl.value = value;
+        onChange(value);
+    }
+
+    function updateSliderByValue(value) {
+        value = Math.max(config.min, Math.min(config.max, Math.round(value)));
+        const percent = (value - config.min) / (config.max - config.min);
+        
+        fill.style.width = `${percent * 100}%`;
+        thumb.style.left = `${percent * 100}%`;
+        inputEl.value = value;
         onChange(value);
     }
 
@@ -27,7 +37,7 @@ export function initSlider(trackId, thumbId, fillId, valueId, configKey, onChang
 
     track.addEventListener('mousedown', (e) => {
         isDragging = true;
-        updateSlider(getPercent(e));
+        updateSliderByPercent(getPercent(e));
     });
 
     thumb.addEventListener('mousedown', () => {
@@ -35,7 +45,7 @@ export function initSlider(trackId, thumbId, fillId, valueId, configKey, onChang
     });
 
     document.addEventListener('mousemove', (e) => {
-        if (isDragging) updateSlider(getPercent(e));
+        if (isDragging) updateSliderByPercent(getPercent(e));
     });
 
     document.addEventListener('mouseup', () => {
@@ -44,21 +54,28 @@ export function initSlider(trackId, thumbId, fillId, valueId, configKey, onChang
 
     track.addEventListener('touchstart', (e) => {
         isDragging = true;
-        updateSlider(getPercent(e));
+        updateSliderByPercent(getPercent(e));
     });
 
     document.addEventListener('touchmove', (e) => {
-        if (isDragging) updateSlider(getPercent(e));
+        if (isDragging) updateSliderByPercent(getPercent(e));
     });
 
     document.addEventListener('touchend', () => {
         isDragging = false;
     });
 
-    const initialPercent = (config.initial - config.min) / (config.max - config.min);
-    updateSlider(initialPercent);
+    inputEl.addEventListener('input', (e) => {
+        updateSliderByValue(e.target.value);
+    });
+
+    inputEl.addEventListener('change', (e) => {
+        updateSliderByValue(e.target.value);
+    });
+
+    updateSliderByValue(config.initial);
 }
 
 export function initAllSliders(onGridChange) {
-    initSlider('gridSlider', 'gridThumb', 'gridFill', 'gridValue', 'grid', onGridChange);
+    initSlider('gridSlider', 'gridThumb', 'gridFill', 'gridInput', 'grid', onGridChange);
 }
