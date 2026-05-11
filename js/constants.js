@@ -28,13 +28,10 @@ export const ALGORITHMS = ['random', 'gradient', 'wave', 'block', 'diamond', 'ho
 
 export const DEFAULT_STATE = {
     gridSize: 8,
-    chaosLevel: 5,
     algorithm: 'random',
-    currentPalette: 'neon',
-    customColors: []
+    currentPalette: 'neon'
 };
 
 export const SLIDER_CONFIG = {
-    grid: { min: 3, max: 32, initial: 8 },
-    chaos: { min: 1, max: 10, initial: 5 }
+    grid: { min: 3, max: 32, initial: 8 }
 };

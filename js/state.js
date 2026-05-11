@@ -42,9 +42,7 @@ class StateManager {
     }
 
     getColors() {
-        return this.state.currentPalette === 'custom' && this.state.customColors.length > 0
-            ? this.state.customColors
-            : PALETTES[this.state.currentPalette];
+        return PALETTES[this.state.currentPalette];
     }
 }
 

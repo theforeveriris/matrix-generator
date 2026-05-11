@@ -1,14 +1,14 @@
 import { state } from './state.js';
 import { generateMatrix } from './generator.js';
 import { initAllSliders } from './sliders.js';
-import { initPresetPalettes, initCustomPalette } from './palette.js';
+import { initPresetPalettes } from './palette.js';
 import { initAlgorithmButtons, updateInfo, initGenerateButton } from './ui.js';
 
 function render() {
     const matrixContainer = document.getElementById('matrix');
-    const { gridSize, algorithm, chaosLevel } = state.get();
+    const { gridSize, algorithm } = state.get();
     const colors = state.getColors();
-    generateMatrix(matrixContainer, gridSize, algorithm, chaosLevel, colors);
+    generateMatrix(matrixContainer, gridSize, algorithm, colors);
     updateInfo(state);
 }
 
@@ -37,14 +37,14 @@ function exportAsPNG(gridSize) {
 }
 
 function exportAsSVG(gridSize) {
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${gridSize*40}" height="${gridSize*40}">`;
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${gridSize * 40}" height="${gridSize * 40}">`;
     svg += `<rect width="100%" height="100%" fill="#ebe7e0"/>`;
 
     document.querySelectorAll('#matrix .matrix-cell').forEach((cell, index) => {
         const row = Math.floor(index / gridSize);
         const col = index % gridSize;
         const color = cell.style.backgroundColor || '#888';
-        svg += `<rect x="${col*40}" y="${row*40}" width="40" height="40" fill="${color}"/>`;
+        svg += `<rect x="${col * 40}" y="${row * 40}" width="40" height="40" fill="${color}"/>`;
     });
     svg += '</svg>';
 
@@ -89,7 +89,7 @@ function exportAsJSON(gridSize) {
 function exportAsCSS() {
     const colors = state.getColors();
     let css = ':root {\n  /* Matrix Palette */\n';
-    colors.forEach((c, i) => css += `  --color-${i+1}: ${c};\n`);
+    colors.forEach((c, i) => css += `  --color-${i + 1}: ${c};\n`);
     css += '}\n';
     const blob = new Blob([css], { type: 'text/css' });
     const url = URL.createObjectURL(blob);
@@ -164,16 +164,13 @@ function showExportModal() {
 
 function init() {
     initAllSliders(
-        (value) => { state.set('gridSize', value); render(); },
-        (value) => { state.set('chaosLevel', value); updateInfo(state); }
+        (value) => { state.set('gridSize', value); render(); }
     );
 
     initPresetPalettes((palette) => {
         state.set('currentPalette', palette);
         render();
     });
-
-    initCustomPalette(state);
 
     initAlgorithmButtons((algo) => {
         state.set('algorithm', algo);
@@ -183,9 +180,9 @@ function init() {
     initGenerateButton(() => { render(); });
 
     const exportBtn = document.getElementById('exportBtn');
-    exportBtn.onclick = function() {
-        alert('Export clicked!');
-    };
+    if (exportBtn) {
+        exportBtn.addEventListener('click', showExportModal);
+    }
 
     state.setRenderCallback(render);
     render();

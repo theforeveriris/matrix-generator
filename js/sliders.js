@@ -59,7 +59,6 @@ export function initSlider(trackId, thumbId, fillId, valueId, configKey, onChang
     updateSlider(initialPercent);
 }
 
-export function initAllSliders(onGridChange, onChaosChange) {
+export function initAllSliders(onGridChange) {
     initSlider('gridSlider', 'gridThumb', 'gridFill', 'gridValue', 'grid', onGridChange);
-    initSlider('chaosSlider', 'chaosThumb', 'chaosFill', 'chaosValue', 'chaos', onChaosChange);
 }

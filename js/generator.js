@@ -1,16 +1,12 @@
 export const ALGORITHMS = ['random', 'gradient', 'wave', 'block', 'diamond', 'horizontal', 'vertical', 'diagonal', 'spiral', 'concentric', 'checker', 'stripes', 'triangular'];
 
-export function getColorByIndex(index, gridSize, algorithm, chaosLevel, colors) {
+export function getColorByIndex(index, gridSize, algorithm, colors) {
     const centerX = (gridSize - 1) / 2;
     const centerY = (gridSize - 1) / 2;
     const row = Math.floor(index / gridSize);
     const col = index % gridSize;
-
-    const chaosRoll = Math.random() * 10;
-
-    if (chaosRoll < chaosLevel) {
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
+    const dx = col - centerX;
+    const dy = row - centerY;
 
     let colorIndex;
 
@@ -19,8 +15,8 @@ export function getColorByIndex(index, gridSize, algorithm, chaosLevel, colors) 
             colorIndex = Math.floor(Math.random() * colors.length);
             break;
         case 'gradient':
-            const dist = Math.sqrt((col - centerX) ** 2 + (row - centerY) ** 2);
-            const maxDist = Math.sqrt(centerX ** 2 + centerY ** 2);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxDist = Math.sqrt(centerX * centerX + centerY * centerY);
             const t = Math.min(1, dist / maxDist);
             colorIndex = Math.floor(t * (colors.length - 1));
             break;
@@ -36,7 +32,7 @@ export function getColorByIndex(index, gridSize, algorithm, chaosLevel, colors) 
             colorIndex = (blockX + blockY) % colors.length;
             break;
         case 'diamond':
-            const diamondDist = Math.abs(col - centerX) + Math.abs(row - centerY);
+            const diamondDist = Math.abs(dx) + Math.abs(dy);
             const maxDiamondDist = gridSize - 1;
             const diamondT = diamondDist / maxDiamondDist;
             colorIndex = Math.floor(diamondT * (colors.length - 1));
@@ -53,8 +49,6 @@ export function getColorByIndex(index, gridSize, algorithm, chaosLevel, colors) 
             colorIndex = Math.floor((diagSum / maxDiag) * (colors.length - 1));
             break;
         case 'spiral':
-            const dx = col - centerX;
-            const dy = row - centerY;
             const angle = Math.atan2(dy, dx);
             const spiralNorm = ((angle + Math.PI) / (2 * Math.PI) + 0.5) % 1;
             colorIndex = Math.floor(spiralNorm * (colors.length - 1));
@@ -82,10 +76,12 @@ export function getColorByIndex(index, gridSize, algorithm, chaosLevel, colors) 
             colorIndex = Math.floor(Math.random() * colors.length);
     }
 
-    return colors[Math.max(0, Math.min(colors.length - 1, colorIndex))];
+    const safeColors = colors && colors.length ? colors : ['#ff0080'];
+    const safeIndex = Math.max(0, Math.min(safeColors.length - 1, Math.floor(colorIndex || 0)));
+    return safeColors[safeIndex];
 }
 
-export function generateMatrix(container, gridSize, algorithm, chaosLevel, colors) {
+export function generateMatrix(container, gridSize, algorithm, colors) {
     container.innerHTML = '';
     container.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
 
@@ -95,7 +91,7 @@ export function generateMatrix(container, gridSize, algorithm, chaosLevel, color
         const cell = document.createElement('div');
         cell.className = 'matrix-cell';
 
-        const color = getColorByIndex(i, gridSize, algorithm, chaosLevel, colors);
+        const color = getColorByIndex(i, gridSize, algorithm, colors);
         cell.style.backgroundColor = color;
         cell.style.color = color;
 
